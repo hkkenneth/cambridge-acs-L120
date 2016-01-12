@@ -90,6 +90,16 @@ We start exploring this set of data by plotting a scatterplot between {\tt Y} an
   \label{fig:04-elder}
 \end{figure}
 
+\subsection{Elm subset}
+
+Since the response variable Y is qualitative (represented in 0 or 1), we perform classification analysis similar to the beech subset. A difference noticeable by inspecting the scatter plot (Figure~\ref{fig:05-elm}) is that the two classes are more well-separated in this data set compared to the beech subset. We follow the same approach, divide the data into a training set and a test set, then apply logistic regression, LDA and QDA to the training set. Surprisingly, these three methods give the exact same prediction for the test set and their prediction accuracy is 90.2\% on the test set. On the other hand, it may be interesting to compare these three parametric methods with a non-parametric method, namely k-nearest neighbour (KNN). Before applying KNN, the predictors should be {\em standardized} to have zero mean and unit variance. we perform three KNN predictions on the standardized data with {\tt K}=1, 3 and 10. A larger K, which specifies the number of nearest neighbour to be considered, implies less variance in the model and higher bias. Despite this conceptual bias-variance trade-off, we achieve exactly the same 87.8\% prediction accuracy rate on the test set regardless of our choice of {\tt K}. The predictions given by {\tt K}=1 and {\tt K}=3 are exactly the same and they are different from {\tt K}=10 by two predictions. we think the parametric methods outperform the non-parametric KNN method because the underlying classification boundary is linear so a simpler model is less prone to noise in the data. The flexibility of KNN method is an overkill and does not cause a comparative advantage.
+
+\begin{figure}[h!]
+  \includegraphics[width=\linewidth]{project/images/05-elm.png}
+  \caption{Inspection plot for decision boundary in elm dataset.}
+  \label{fig:05-elm}
+\end{figure}
+
 \newpage
 
 \paragraph{Appendices}
