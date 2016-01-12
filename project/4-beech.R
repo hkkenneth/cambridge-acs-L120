@@ -1,12 +1,11 @@
-dim(Data.beech)
-# [1] 500  12
-
 summary(Data.beech)
 summary(as.factor(Data.beech$Y))  # This is a classification problem
 # 0   1 
 # 215 285
 
 Data.beech=Data.beech[,c("Y", "X3", "X7")]
+dim(Data.beech)
+# [1] 500  3
 pairs(Data.beech)
 
 plot(Data.beech$X3[Data.beech$Y==1],Data.beech$X7[Data.beech$Y==1], pch=1, xlim = c(-1,1), ylim=c(-1,1), col="red", ylab="X7", xlab="X3", main="Beech dataset: X3 versus X7 per class")

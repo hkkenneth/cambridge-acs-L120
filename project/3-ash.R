@@ -1,9 +1,8 @@
-dim(Data.ash)
-# [1] 500  12
-
 summary(Data.ash)
 
 Data.ash=Data.ash[,c(-1,-12)]  # Remove id and label
+dim(Data.ash)
+# [1] 500  10
 
 pairs(Data.ash)  # Output omitted as data is too dense to be display on paper
 plot(Y~X7, data=Data.ash)  # We observe a clear linear relationship

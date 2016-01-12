@@ -1,9 +1,8 @@
-dim(Data.elder)
-# [1] 500  12
-
 summary(Data.elder)
 
 Data.elder=Data.elder[,c("Y", "X7")]
+dim(Data.elder)
+# [1] 500  2
 plot(Data.elder$X7, Data.elder$Y)  # funnel shape
 
 lm.fit.elder=lm(Y~X7,data=Data.elder)
