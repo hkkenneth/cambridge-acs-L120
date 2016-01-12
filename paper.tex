@@ -2,6 +2,8 @@
 
 \usepackage{amsmath}
 \usepackage{listings}
+\usepackage{graphicx}
+
 
 \title{Data Analysis and Visualisation using R}
 \date{2016-01-11}
@@ -40,33 +42,43 @@ yew & 50 & {\tt X1, X2, X3, X4, X5, X6, X7, X8, X9} \\ \hline
 
 A variety of regression and classification techniques have been employed to detect characteristics and dependencies underlying the training data. The results are presented graphically and numerically in this report.
 
+\begin{table}
+\begin{center}
+\begin{tabular}{|c|c|}
+\hline \bf Library & \bf Functions provided \\ \hline
+{\textit leaps} & {\tt regsubsets()} \\ \hline
+\end{tabular}
+\end{center}
+\caption{\label{library-table} Overview of libraries used.}
+\end{table}
+
 \subsection{Ash subset}
 
-The response variable {\tt Y} is continuous so I analyse this subset using regression methods. First, I use {\tt pairs()} to produce a matrix of pairwise scatterplots for each pair of variables ({\tt Y} and all {\tt X\textsubscript{i}}) to detect whether there are any observable patterns. {\tt X7} shows an obvious linear relationship with {\tt Y} in these plots so I use {\tt lm()} to fit a simple linear regression between them. The summary of this fit shows that the least squares coefficients of {\tt X7} in the linear relationship is highly significant (p-value is close to zero) and training $R^2$ value of 0.9966 is a measure showing that variance left unexplained by the linear fit is negligible. However, this should not rule out the possibility that {\tt Y} is also related to some of the other eight predictors. I perform a multiple linear regression using all available predictors and obtain an ``improved'' fit where both {\tt X3} and {\tt X7} are significant and training $R^2$ value is 0.9988. But such improvement must be taken with a grain of salt because training $R^2$ values for any more flexible models (i.e. those with more predictors) must be no less than a more restrictive one. To find out whether a simple linear model involving {\tt X7} only is the true relationship over other more flexible multiple linear models, k?-fold cross validation has been used.  X3, X4, X7
+The response variable {\tt Y} is continuous so regression methods are used. First, we use {\tt pairs()} to produce a matrix of pairwise scatterplots for each pair of variables ({\tt Y} and all {\tt X\textsubscript{i}}) to detect whether any observable patterns exist. {\tt X7} shows an obvious linear relationship with {\tt Y} in these plots so we use {\tt lm()} to fit a simple linear regression between them. The summary of this fit shows that the least squares coefficients of {\tt X7} in the linear relationship is highly significant (p-value is close to zero). Its training $R^2$ value of 0.9966 shows that the variance left unexplained by the linear fit is negligible. This fit also results in a convincing inspection plot as shown in Figure~\ref{fig:01-ash}. No obvious pattern can seen in the residuals vs fitted values plot. However, this should not rule out the possibility that {\tt Y} is also related to some other predictors. we perform a multiple linear regression using all available predictors and obtain an ``improved'' fit where both {\tt X3} and {\tt X7} are significant and training $R^2$ value is 0.9988. But such improvement must be taken with a grain of salt because training $R^2$ values for any more flexible models (i.e. those with more predictors) must be no less than a more restrictive one. To verify whether a simple linear model involving {\tt X7} only is the true relationship over other more flexible multiple linear models, 5-fold cross-validation has been used with best subset variables selection. As shown in Listing~\ref{ash}, cross-validation suggests $Y \sim X3+X4+X7+X8$ as the model achieving the lowest test squared error but the performance difference compared to $Y \sim X3$ is small, which is chosen for the sake of interpretability.
 
-\paragraph{Dataset}
+\begin{figure}[h!]
+  \includegraphics[width=\linewidth]{project/images/01-ash.png}
+  \caption{Inspection plots for linear fit $Y \sim X7$ in ash dataset.}
+  \label{fig:01-ash}
+\end{figure}
 
-Some more text.
-
-This formula $f(x) = x^2$ is an example.
-
-\subparagraph{Subparagraph}
-
-Even more text.
-
-\begin{equation*}
-  f(x) = x^2
-\end{equation*}
-
-\begin{align*}
-  1 + 2 &= 3\\
-  1 &= 3 - 2
-\end{align*}
 \newpage
+
 \paragraph{Appendices}
 
-\lstinputlisting[language=R,caption={preprocessing.R},label=preprocessing]{project/2-preprocessing.R}
+\lstinputlisting[breaklines=true,language=R,caption={sharecode.R},label=sharedcode]{project/1-sharedcode.R}
 
 \rule{\textwidth}{1pt}
+
+\lstinputlisting[breaklines=true,language=R,caption={preprocessing.R},label=preprocessing]{project/2-preprocessing.R}
+
+\rule{\textwidth}{1pt}
+
+\newpage
+
+\lstinputlisting[breaklines=true,language=R,caption={ash.R},label=ash]{project/3-ash.R}
+
+\rule{\textwidth}{1pt}
+
 
 \end{document}
