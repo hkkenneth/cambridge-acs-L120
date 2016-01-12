@@ -47,6 +47,7 @@ A variety of regression and classification techniques have been employed to dete
 \begin{tabular}{|c|c|}
 \hline \bf Library & \bf Functions provided \\ \hline
 {\textit class} & {\tt knn(), cv.knn()} \\ \hline
+{\textit glmnet} & {\tt cv.glmnet()} \\ \hline
 {\textit leaps} & {\tt regsubsets()} \\ \hline
 {\textit MASS} & {\tt lda(), qda()} \\ \hline
 \end{tabular}
@@ -102,7 +103,7 @@ Since the response variable Y is qualitative (represented in 0 or 1), we perform
 
 \subsection{Larch subset}
 
-Among predictor columns {\tt X3, X4, X5} and {\tt X9}, we observe an evident linear relationship between {\tt Y} and {\tt X5} in the pairwise scatterplots (Figure~\ref{fig:06-larch}) for every pair of variables ({\tt Y} and the predictors). A hypothesis we have about this data set is that some of the predictors are irrelevant to the response variable Y, so I decide to apply \textbf{variable selection techniques} using regsubsets() with the \textbf{best subset}, \textbf{forward stepwise} and \textbf{backward stepwise approach}. The three approaches gave exactly the same set of predictors for each number of predictors. As this data set is smaller than the previous subsets, we use 5-fold cross-validation instead of validation set approach to choose among the models. Finally, the model using all predictors (i.e. $Y \sim X3+X4+X5+X9$) achieve the lowest 5-fold cross-validated test error. The result is confirmed by a multiple linear regression fit using all these predictors where every predictor is associated with a low p-value and the training $R^2$ is as high as 0.9593. No outliers or high leverage points can be observed from the four default plots (Figure~\ref{fig:07-larch}) for the linear model.
+Among predictor columns {\tt X3, X4, X5} and {\tt X9}, we observe an evident linear relationship between {\tt Y} and {\tt X5} in the pairwise scatterplots (Figure~\ref{fig:06-larch}) for every pair of variables ({\tt Y} and the predictors). A hypothesis we have about this data set is that some of the predictors are irrelevant to the response variable Y, so I decide to apply \textbf{variable selection techniques} using {\tt regsubsets()} with the \textbf{best subset}, \textbf{forward stepwise} and \textbf{backward stepwise approach}. The three approaches gave exactly the same set of predictors for each number of predictors. As this data set is smaller than the previous subsets, we use 5-fold cross-validation instead of validation set approach to choose among the models. Finally, the model using all predictors (i.e. $Y \sim X3+X4+X5+X9$) achieve the lowest 5-fold cross-validated test error. The result is confirmed by a multiple linear regression fit using all these predictors where every predictor is associated with a low p-value and the training $R^2$ is as high as 0.9593. No outliers or high leverage points can be observed from the four default plots (Figure~\ref{fig:07-larch}) for the linear model.
 
 \begin{figure}[h!]
   \includegraphics[width=\linewidth]{project/images/06-larch.png}
@@ -114,6 +115,22 @@ Among predictor columns {\tt X3, X4, X5} and {\tt X9}, we observe an evident lin
   \includegraphics[width=\linewidth]{project/images/07-larch.png}
   \caption{Inspection plots showing good linear fit for $\sqrt{Y} \sim X3+X4+X5+X9$ in larch dataset.}
   \label{fig:07-larch}
+\end{figure}
+
+\subsection{Oak subset}
+
+An inspection using scatter plot (Figure~\ref{fig:08-oak}) identifies a nonlinear relationship between $Y$ and the only predictor, namely $X3$. Plotting Y against increasing powers of $X3$ shows that $Y$ seems to have linear relationship with $X3^4$ or $X3^5$. Hence, we use {\tt poly()} function to produce a matrix with polynomial values for $X3$ up to $X3^8$, then perform best subset model selection with {\tt regsubsets()} and then apply 5-fold cross-validation to choose from these candidate models which have different number of predictors. The lowest cross-validated test error is obtained by using three terms in the model. We perform the best subset model selection again (using all data instead of cross-validation) and pick the model with three terms which are $X3$, $X3^2$ and $X3^4$. The change RSS, adjusted $R^2$, C\textsubscript{p} and BIC versus number of variables is shown in Figure~\ref{fig:09-oak}. in Finally, we fit the data with $Y \sim X3+X3^2+X3^4$ using {\tt lm()} and obtain a training $R^2$ value of 0.975. However, the p-values associated with $X3$ and $X3^2$ terms are not significant. This seems to contradict the result of the ``best model'' using cross-validation. We think that this is caused by {\em collinearity} between the power terms as the different powers of $X3$ are obviously related to each other. Collinearity reduces the accuracy of the regression coefficient estimation as well as the probability of correctly detecting a non-zero coefficient. This hypothesis is supported by the fact that standard errors associated with the coefficients in the ``three terms model'' is 10 times larger than the standard errors in the condition when only one power-term is used as predictors. As 5-fold cross-validated test error is a direct estimate for the true test error, we are confident that it is a more robust way to judge a model's correctness than checking coefficients' p-values (which computation requires estimate of variance from the data). Hence we insist that $Y \sim X3+X3^2+X3^4$ is a good model for the underlying relationship.
+
+\begin{figure}[h!]
+  \includegraphics[width=\linewidth]{project/images/08-oak.png}
+  \caption{Inspection plot for non-linearity in oak dataset.}
+  \label{fig:08-oak}
+\end{figure}
+
+\begin{figure}[h!]
+  \includegraphics[width=\linewidth]{project/images/09-oak.png}
+  \caption{Inspection plots using trend of accuracy versus number of model predictors in oak dataset. The red dots denote minima/maxima.}
+  \label{fig:09-oak}
 \end{figure}
 
 \newpage
