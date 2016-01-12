@@ -74,6 +74,22 @@ We approach the problem from a classification perspective because the response v
   \label{fig:01-beech}
 \end{figure}
 
+\subsection{Elder subset}
+
+We start exploring this set of data by plotting a scatterplot between {\tt Y} and {\tt X7}, the only remaining predictor. We observe that a funnel shape formed by the data points overshadows an upward linear relationship, as shown in Figure~\ref{fig:03-elder}. The funnel shape may imply a non-constant variance in the error terms, a phenomenon called {\em heteroscedasticity}. In this data set, heteroscedasticity causes the variance in error terms increases with the response values. One possible solution is transforming the response variable using a concave function hence we compare three models: $Y \sim X7$, $log(Y) \sim X7$ and $\sqrt{Y} \sim X7$. The funnel-shaped pattern and magnitude observed in the residuals versus fitted values plot for the simple linear regression model has been greatly reduced in Figure~\ref{fig:04-elder}, although not completely eliminated, through the use of concave transformation. The training $R^2$ values for these models are 0.3359, 0.3305 and 0.3373 respectively. Based on this, we have chosen $sqrt{Y} \sim X7$ as the resulting linear regression coefficients are significant.
+
+\begin{figure}[h!]
+  \includegraphics[width=\linewidth]{project/images/03-elder.png}
+  \caption{Inspection plot for heteroscedasticity in elder dataset.}
+  \label{fig:03-elder}
+\end{figure}
+
+\begin{figure}[h!]
+  \includegraphics[width=\linewidth]{project/images/04-elder.png}
+  \caption{Inspection plots showing reduced funnel-shape residuals for $\sqrt{Y} \sim X7$ in elder dataset.}
+  \label{fig:04-elder}
+\end{figure}
+
 \newpage
 
 \paragraph{Appendices}
@@ -93,6 +109,10 @@ We approach the problem from a classification perspective because the response v
 \rule{\textwidth}{1pt}
 
 \lstinputlisting[breaklines=true,language=R,caption={beech.R},label=beech]{project/4-beech.R}
+
+\rule{\textwidth}{1pt}
+
+\lstinputlisting[breaklines=true,language=R,caption={elder.R},label=elder]{project/5-elder.R}
 
 \rule{\textwidth}{1pt}
 
