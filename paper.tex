@@ -133,7 +133,44 @@ An inspection using scatter plot (Figure~\ref{fig:08-oak}) identifies a nonlinea
   \label{fig:09-oak}
 \end{figure}
 
-\newpage
+\subsection{Rowan subset}
+
+The summary of the data shows that the values of $Y$ and $X4$ are evenly spread across their respective ranges. A basic scatterplot (Figure~\ref{fig:10-rowan}) of $X4$ versus $Y$ confirms visually that these observations do not contain any outliers or high leverage points and there is a linear relationship between the response variable $Y$ and the predictor $X4$; the relationship is also supported quantitatively by a close-to-one Pearson correlation coefficient (0.9742865). Hence, we verify the linear relationship by fitting the data using simple linear regression. The best fit line is shown as the red line in Figure~\ref{fig:10-rowan}.The summary of the fitted model shows that the coefficient of $X4$ is statistically significant with an almost-zero p-value. The positive coefficient of $X4$ aligns with the sign of correlation coefficient, which is also positive. The $R^2$ value for the training data is 0.9492 which implies most of the variation in the observation can be explained by the fitted model. There is no apparent pattern in the plot for residuals against fitted values so we can be confident about our hypothesis of a linear relationship. Out of curiosity, I fitted a polynomial regression model with predictors from $X4$, $X4^2$, \(...\) , $X4^5$ and none of the polynomial terms higher than the first power can be fitted to a coefficient significantly.
+
+\begin{figure}[h!]
+  \includegraphics[width=\linewidth]{project/images/10-rowan.png}
+  \caption{Inspection plot showing good linear fit for $\sqrt{Y} \sim X3+X4+X5+X9$ in rowan dataset. Best fit line is in red color.}
+  \label{fig:10-rowan}
+\end{figure}
+
+\subsection{Yew subset}
+
+A simple scatter plot (Figure~\ref{fig:11-yew}) for $Y$ versus $X4$ shows that there are two {\em outliers} (with exceptionally large $Y$ value) and no {\em high leverage point}. While the rest of $Y$ values stay within the range (-1.461, 32.770), those two points have a value of 999. We use {\tt lm()} to fit two simple linear regression models, one on the original data containing the outliers and another one on a clean data set where two outlier points have been removed. In the ``original'' model, least squares fitting fails to identify a significant relationship (i.e. p-value is large) and the model cannot explain the responses? variance (training $R^2$ = 0.02362). In the ``clean'' model, the algorithm finds a significant coefficient for $X4$ (p-value small than 2e-16) and the training $R^2$ is 0.9474 which is able to explain the linear relationship well. An alternative and quantitative measure for this difference is correlation coefficient. The correlation coefficient between $Y$ and $X4$ is -0.1537 when outliers are included but 0.9733695 when outliers are removed. Two outliers, which is 4\% of the observations, are influential enough to prevent a strong positive correlation being detected. Figure~\ref{fig:12-yew} shows the two best fit line corresponding to the ``original'' model (red line) and ``clean'' model (black line). It is also worth investigating which outlier is more influential. Hence, I fit two more models, each using training data with one outlier removed. As we can see from the plot, one outlier is associated with an extreme $X4$ value but the other one is associated with a $X4$ value closer to the average. Figure~\ref{fig:13-yew} clearly shows the impact of the outliers. The blue line represents the outlier-free best fit line, which aligns well with the data points. The red line represent the best fit line when both outliers are present so this line is furthest away from the blue line. The green line is the best fit line trained on all data except the outlier observation with close-to-mean $X4$ value. The orange line is the best fit line trained on all data except the outlier observation with extreme $X4$ value. The orange line is closer to the blue line than the green one so we can say that it is less influenced by an outlier. In other words, the outlier with extreme $X4$ value has had a larger impact than the one with average $X4$ value on the correctness of the best fit line. This demonstrate the leverage concept - extreme $X$ value has high leverage while average $X$ value has low leverage. Leverage statistics can be computed using {\tt hatvalues()}, the outlier with extreme $X4$ value has a leverage of 0.0721, which is close to the maximum (0.0756), while the one with average $X4$ value has a leverage of 0.0224, which is close to the minimum (0.0202).
+
+\begin{figure}[h!]
+  \includegraphics[width=\linewidth]{project/images/11-yew.png}
+  \caption{Inspection plot showing outliers in yew dataset.}
+  \label{fig:11-yew}
+\end{figure}
+
+\begin{figure}[h!]
+  \includegraphics[width=\linewidth]{project/images/12-yew.png}
+  \caption{Inspection plot showing impact of outliers on linear fit models in yew dataset.}
+  \label{fig:12-yew}
+\end{figure}
+
+\begin{figure}[h!]
+  \includegraphics[width=\linewidth]{project/images/13-yew.png}
+  \caption{Inspection plot comparing the impact of outliers on linear fit models in yew dataset.}
+  \label{fig:13-yew}
+\end{figure}
+
+\section{Conclusion}
+
+In this study, we have applied various statistical learning methods. The lesson learnt is that outliers and high leverage points should be identified in the early stage of analysis. Performance of models should be compared using independent test set or cross-validation because any metrics obtained from the training data may be impacted by {\em overfitting}.
+
+\clearpage
+
 
 \paragraph{Appendices}
 
